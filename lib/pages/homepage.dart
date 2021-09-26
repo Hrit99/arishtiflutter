@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/apis/submitapi.dart';
+import 'package:flutterapp/models/dataentry.dart';
 import 'package:flutterapp/pages/cryptoPage.dart';
 import 'package:flutterapp/pages/displayPage.dart';
+import 'package:flutterapp/providers/entryProvider.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key key}) : super(key: key);
@@ -16,6 +19,7 @@ class _HomepageState extends State<Homepage> {
   TextEditingController actr = new TextEditingController();
   @override
   Widget build(BuildContext context) {
+    EntryPro entrypro = Provider.of<EntryPro>(context, listen: false);
     return Scaffold(
       body: Center(
         child: Container(
@@ -58,36 +62,43 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                            transitionDuration: Duration(seconds: 1),
-                            opaque: false,
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    DisplayPage()),
-                      );
-                    },
-                    child: Text("Display")),
+                // ElevatedButton(
+                //     onPressed: () {
+                //       Navigator.of(context).push(
+                //         PageRouteBuilder(
+                //             transitionDuration: Duration(seconds: 1),
+                //             opaque: false,
+                //             pageBuilder:
+                //                 (context, animation, secondaryAnimation) =>
+                //                     DisplayPage()),
+                //       );
+                //     },
+                //     child: Text("Display")),
                 ElevatedButton(
                     onPressed: () {
                       if ((namectr.value.text != null) &&
                           (cctr.value.text != null) &&
                           (actr.value.text != null)) {
+                        print(actr.value.text);
                         submit(
                                 name: namectr.value.text,
                                 contact: cctr.value.text,
                                 address: actr.value.text)
                             .then((value) {
-                          namectr.clear();
-                          cctr.clear();
-                          actr.clear();
-                          if (value) {
+                          if (value != null) {
+                            entrypro.addEntry = Entry(
+                                id: value,
+                                address: actr.value.text,
+                                contact: cctr.value.text,
+                                name: namectr.value.text);
+
                             print("true");
                           } else {
                             print("false");
                           }
+                          namectr.clear();
+                          cctr.clear();
+                          actr.clear();
                         });
                       } else {
                         namectr.clear();

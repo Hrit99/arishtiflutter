@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/apis/loginapi.dart';
 import 'package:flutterapp/apis/signupapi.dart';
 import 'package:flutterapp/pages/homepage.dart';
+import 'package:flutterapp/pages/initialPage.dart';
+import 'package:flutterapp/providers/entryProvider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,12 +14,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => EntryPro(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(),
       ),
-      home: MyHomePage(),
     );
   }
 }
@@ -101,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 opaque: false,
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        Homepage()),
+                                        InitialPage()),
                             (Route<dynamic> route) => false);
                       } else {
                         print("false");

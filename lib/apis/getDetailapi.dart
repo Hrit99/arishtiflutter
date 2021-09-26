@@ -15,6 +15,7 @@ Future<List<Entry>> getDetails() async {
       print(valid.length);
       List<Entry> ll = List.from(valid
           .map((e) => Entry(
+                id: e['_id'],
                 address: e['address'],
                 contact: e['contact'],
                 name: e['name'],
